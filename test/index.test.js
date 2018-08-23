@@ -33,4 +33,21 @@ describe('Auth controller', () => {
     expect(response2.status).to.equal(200);
     expect(response2.text).to.equal('Authenticated route');
   });
+
+  it('can logout a user', async () => {
+    let request = supertest.agent(server);
+    const response = await request.post('/login').send({
+      email: 'testuser@test.com',
+      password: 'testpassword',
+    });
+    const response2 = await request.get('/protected');
+    const response3 = await request.post('/logout');
+    const response4 = await request.get('/protected');
+
+    expect(response.status).to.equal(200);
+    expect(response2.status).to.equal(200);
+    expect(response2.text).to.equal('Authenticated route');
+    expect(response3.status).to.equal(200);
+    expect(response4.status).to.equal(401);
+  });
 });

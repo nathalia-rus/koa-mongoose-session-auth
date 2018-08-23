@@ -16,12 +16,13 @@ router.post('/login', auth.login(User, {
   usernameField: 'email',
   passwordField: 'password'
 }));
+router.post('/logout', auth.logout());
 router.use(async (ctx, next) => {
-    if (!ctx.session.userId) {
-        ctx.throw(401);
-    }
+  if (!ctx.session.userId) {
+      ctx.throw(401);
+  }
 
-    await next();
+  await next();
 });
 router.get('/protected', (ctx) => {
   ctx.response.body = 'Authenticated route';
