@@ -17,6 +17,11 @@ router.post('/login', auth.login(User, {
   passwordField: 'password'
 }));
 router.post('/logout', auth.logout());
+router.post('/register', auth.register(User, {
+  usernameField: 'email',
+  passwordField: 'password',
+  extra: ['firstName', 'lastName']
+}));
 router.use(async (ctx, next) => {
   if (!ctx.session.userId) {
       ctx.throw(401);

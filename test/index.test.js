@@ -50,4 +50,39 @@ describe('Auth controller', () => {
     expect(response3.status).to.equal(200);
     expect(response4.status).to.equal(401);
   });
+
+  it('can register a new user', async () => {
+    let request = supertest.agent(server);
+    const response = await request.post('/register').send({
+      email: 'testuser2@test.com',
+      password: 'testpassword',
+      firstName: 'Test',
+      lastName: 'User',
+    });
+
+    expect(response.status).to.equal(200);
+    expect(response.body.firstName).to.equal('Test');
+    expect(response.body.lastName).to.equal('User');
+    expect(response.body.email).to.equal('testuser2@test.com');
+    expect(response.body.password).to.equal(undefined);
+  });
+
+  it('can register a new user and log in', async () => {
+    let request = supertest.agent(server);
+    const response = await request.post('/register').send({
+      email: 'testuser2@test.com',
+      password: 'testpassword',
+      firstName: 'Test',
+      lastName: 'User',
+    });
+    const response2 = await request.post('/login').send({
+      email: 'testuser2@test.com',
+      password: 'testpassword',
+    });
+    const response3 = await request.get('/protected');
+
+    expect(response.status).to.equal(200);
+    expect(response2.status).to.equal(200);
+    expect(response3.status).to.equal(200);
+  });
 });

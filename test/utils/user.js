@@ -9,6 +9,12 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  firstName: {
+    type: String,
+  },
+  lastName: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model('User', schema);
